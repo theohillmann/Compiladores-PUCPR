@@ -39,7 +39,7 @@ def initial_state(position: int) -> tuple[int, Optional[str]]:
         return position + 1, None
 
     elif current_char.isalpha():
-        return position + 1, None
+        return spacial_commands(position)
 
     return position, f"Error: Invalid character '{current_char}' at position {position}"
 
@@ -73,4 +73,18 @@ def numeric_state(position: int) -> tuple[int, Optional[str]]:
     return position, None
 
 
-parseExpressao("(3.14 2.0 +)")
+def spacial_commands(position: int) -> tuple[int, Optional[str]]:
+    complete_command = ""
+
+    while position < len(input_line) and (
+        input_line[position].isdigit() or input_line[position].isalpha()
+    ):
+        complete_command += input_line[position]
+        position += 1
+
+    token_list.append(complete_command)
+    return position, None
+
+
+# parseExpressao("(3.14 2.0 +)")
+parseExpressao("12 MEM")
