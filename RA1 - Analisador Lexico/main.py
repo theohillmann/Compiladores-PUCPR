@@ -25,6 +25,8 @@ def is_parentheses_valid():
     for char in input_line:
         if char in ["(", ")"]:
             count += 1 if char == "(" else -1
+            if count < 0:
+                return False
 
     return count == 0
 
@@ -110,4 +112,4 @@ print(parseExpressao("(3.14 2.0 &)"))
 print(parseExpressao("3.14 2.0 +)"))
 print(parseExpressao("((3.14 2.0 +)"))
 print(parseExpressao("(3.14..5 2.0 +)"))
-print(parseExpressao(""))
+print(parseExpressao("())("))
