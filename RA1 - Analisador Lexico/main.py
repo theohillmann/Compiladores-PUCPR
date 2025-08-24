@@ -6,16 +6,29 @@ input_line = ""
 
 def parseExpressao(line: str) -> list:
     global token_list, input_line
+    token_list.clear()
     input_line = line
     current_position = 0
 
     error_message = None
+    if not is_parentheses_valid():
+        error_message = "Error: Unmatched parentheses"
 
     while current_position < len(input_line) and error_message is None:
         last_position = current_position
         current_position, error_message = initial_state(current_position)
 
-    print(token_list, error_message)
+    return error_message if error_message else token_list
+    # print(token_list, error_message)
+
+
+def is_parentheses_valid():
+    count = 0
+    for char in input_line:
+        if char in ["(", ")"]:
+            count += 1 if char == "(" else -1
+
+    return count == 0
 
 
 def initial_state(position: int) -> tuple[int, Optional[str]]:
@@ -34,7 +47,7 @@ def initial_state(position: int) -> tuple[int, Optional[str]]:
     elif current_char.isdigit() or current_char == ".":
         return numeric_state(position)
 
-    elif current_char in ["+", "-", "*", "/"]:
+    elif current_char in ["+", "-", "*", "/", "%", "^"]:
         token_list.append(current_char)
         return position + 1, None
 
@@ -50,7 +63,6 @@ def numeric_state(position: int) -> tuple[int, Optional[str]]:
 
     while position < len(input_line):
         current_char = input_line[position]
-        print(current_char)
 
         if current_char.isdigit():
             position += 1
@@ -86,5 +98,18 @@ def spacial_commands(position: int) -> tuple[int, Optional[str]]:
     return position, None
 
 
-# parseExpressao("(3.14 2.0 +)")
-parseExpressao("12 MEM")
+print(parseExpressao("(3.14 2.0 +)"))
+print(parseExpressao("(1.5 2.0 *)"))
+print(parseExpressao("(5 RES)"))
+print(parseExpressao("(7 3 ^)"))
+print(parseExpressao("(7 3 /)"))
+print(parseExpressao("(7 3 -)"))
+print(parseExpressao("(7 3 ^)"))
+print(parseExpressao("(7 3 %)"))
+print(parseExpressao("(3.14.5 2.0 +)"))
+print(parseExpressao("(3,14 2.0 +)"))
+print(parseExpressao("(3.14 2.0 &)"))
+print(parseExpressao("3.14 2.0 +)"))
+print(parseExpressao("((3.14 2.0 +)"))
+print(parseExpressao("(3.14..5 2.0 +)"))
+print(parseExpressao(""))
