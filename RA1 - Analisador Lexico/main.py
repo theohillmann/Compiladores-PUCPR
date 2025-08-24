@@ -15,11 +15,9 @@ def parseExpressao(line: str) -> list:
         error_message = "Error: Unmatched parentheses"
 
     while current_position < len(input_line) and error_message is None:
-        last_position = current_position
         current_position, error_message = initial_state(current_position)
 
     return error_message if error_message else token_list
-    # print(token_list, error_message)
 
 
 def is_parentheses_valid():
