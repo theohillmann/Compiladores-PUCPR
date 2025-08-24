@@ -1,21 +1,24 @@
-token_list = []
 from typing import Optional
 
+token_list = []
+input_line = ""
 
-def parseExpressao(input_line: str) -> list:
-    global token_list
+
+def parseExpressao(line: str) -> list:
+    global token_list, input_line
+    input_line = line
     current_position = 0
 
     error_message = None
 
     while current_position < len(input_line) and error_message is None:
         last_position = current_position
-        current_position, error_message = initial_state(current_position, input_line)
+        current_position, error_message = initial_state(current_position)
 
-    print(token_list)
+    print(token_list, error_message)
 
 
-def initial_state(position: int, input_line: str) -> tuple[int, Optional[str]]:
+def initial_state(position: int) -> tuple[int, Optional[str]]:
     if position >= len(input_line):
         return position, None
 
@@ -29,7 +32,7 @@ def initial_state(position: int, input_line: str) -> tuple[int, Optional[str]]:
         return position + 1, None
 
     elif current_char.isdigit() or current_char == ".":
-        return position + 1, None
+        return numeric_state(position)
 
     elif current_char in ["+", "-", "*", "/"]:
         token_list.append(current_char)
@@ -39,6 +42,35 @@ def initial_state(position: int, input_line: str) -> tuple[int, Optional[str]]:
         return position + 1, None
 
     return position, f"Error: Invalid character '{current_char}' at position {position}"
+
+
+def numeric_state(position: int) -> tuple[int, Optional[str]]:
+    complete_number = ""
+    decimal_points_count = 0
+
+    while position < len(input_line):
+        current_char = input_line[position]
+        print(current_char)
+
+        if current_char.isdigit():
+            position += 1
+            complete_number += current_char
+
+        elif current_char == "." and decimal_points_count == 0:
+            complete_number += current_char
+            position += 1
+            decimal_points_count += 1
+
+        elif current_char == "." and decimal_points_count >= 1:
+            return (
+                position,
+                f"Error: Multiple decimal points in number at position {position}",
+            )
+        else:
+            break
+
+    token_list.append(complete_number)
+    return position, None
 
 
 parseExpressao("(3.14 2.0 +)")
