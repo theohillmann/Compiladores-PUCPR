@@ -1,4 +1,5 @@
 def executar_expressao(tokens: list, resultados: list, memorias: dict):
+    built_in_functions = ["RES"]
     stack_calculation = []
     token_index = 0
 
@@ -12,6 +13,19 @@ def executar_expressao(tokens: list, resultados: list, memorias: dict):
 
         elif current_token in ["+", "-", "*", "/", "%", "^", "^"]:
             result = process_operation(stack_calculation, current_token)
+            stack_calculation.append(result)
+
+        elif current_token == "RES":
+            try:
+                tokens[token_index - 1]
+            except IndexError:
+                return "Erro: RES requires a preceding token"
+            res(stack_calculation, tokens[token_index - 1], resultados)
+
+        elif current_token.isalpha():
+            if current_token in built_in_functions:
+                return f"Error: '{current_token}' is a reserved keyword"
+            mem(stack_calculation, current_token, memorias)
 
         else:
             try:
@@ -22,7 +36,11 @@ def executar_expressao(tokens: list, resultados: list, memorias: dict):
 
         token_index += 1
 
-    return result
+    return stack_calculation
+    # if len(stack_calculation) != 0:
+    #     return "Erro: Wrong expression"
+    #
+    # return result
 
 
 def process_operation(stack_calculation, operator):
@@ -48,6 +66,23 @@ def execute_operation(
         return "Error: operation failed"
 
 
+def res(stack_calculation, token, resultados):
+    if len(stack_calculation) < 1:
+        return "Erro: RES requires one operand"
+    try:
+        index = stack_calculation.pop()
+        if index != int(index) or index <= 0:
+            return "Erro: RES requires a positive integer operand"
+        result = resultados[-int(index)]
+    except IndexError:
+        return f"Erro: RES {token} out of range"
+
+    stack_calculation.append(result)
+    return result
+
+def mem(stack_calculation, token, memorias):
+    pass
+
 print(executar_expressao(["(", "2", "2.0", "+", ")"], "", ""))
 print(executar_expressao(["(", "3", "2.0", "*", ")"], "", ""))
 print(executar_expressao(["(", "10", "5", "/", ")"], "", ""))
@@ -58,3 +93,10 @@ print(executar_expressao(["(", "2", "0", "%", ")"], "", ""))
 print(executar_expressao(["(", "2", "0", "/", ")"], "", ""))
 print(executar_expressao(["(", "2", "0", "$", ")"], "", ""))
 print(executar_expressao(["(", "2", "+", "0", ")"], "", ""))
+print(executar_expressao(["(", "2", "1", "+", "21", ")"], "", ""))
+print(
+    executar_expressao(
+        ["(", "(", "5", "RES", ")", "4", "+", ")"], [10, 20, 30, 40, 50], ""
+    )
+)
+print(executar_expressao(["(", "1", "RES", ")"], [1, 2, 3], ""))
