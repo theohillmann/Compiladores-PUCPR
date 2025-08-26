@@ -5,6 +5,14 @@ from executar_expressao import executar_expressao
 
 
 def main(expressions_file, assembly_file):
+    """
+    Função principal que processa as expressões de um arquivo, executa cada uma,
+    imprime os resultados e indica onde o código assembly foi salvo.
+
+    Args:
+        expressions_file (str): Caminho para o arquivo contendo as expressões.
+        assembly_file (str): Caminho para o arquivo de saída em assembly.
+    """
     memory = {}
     results = []
     operations = lerArquivo(expressions_file)
@@ -21,10 +29,13 @@ def main(expressions_file, assembly_file):
 
 
 if __name__ == "__main__":
+    """
+    Ponto de entrada do programa. Analisa argumentos da linha de comando e chama a função principal.
+    """
     parser = argparse.ArgumentParser(
-        description="Process expressions and generate assembly."
+        description="Processa expressões e gera código assembly."
     )
-    parser.add_argument("expressions_file", help="File containing expressions")
-    parser.add_argument("assembly_file", help="Output assembly (.s) file")
+    parser.add_argument("expressions_file", help="Arquivo contendo as expressões")
+    parser.add_argument("assembly_file", help="Arquivo de saída assembly (.s)")
     args = parser.parse_args()
     main(args.expressions_file, args.assembly_file)

@@ -1,4 +1,15 @@
 def executar_expressao(tokens: list, resultados: list, memorias: dict):
+    """
+    Executa uma expressão matemática baseada em uma lista de tokens.
+
+    Args:
+        tokens (list): Lista de tokens representando a expressão.
+        resultados (list): Lista de resultados anteriores para uso com RES.
+        memorias (dict): Dicionário de memórias para armazenamento de variáveis.
+
+    Returns:
+        float|str: Resultado da expressão ou mensagem de erro.
+    """
     built_in_functions = ["RES"]
     stack_calculation = []
     token_index = 0
@@ -51,6 +62,16 @@ def executar_expressao(tokens: list, resultados: list, memorias: dict):
 
 
 def process_operation(stack_calculation, operator):
+    """
+    Processa uma operação matemática utilizando os operandos da pilha.
+
+    Args:
+        stack_calculation (list): Pilha de operandos.
+        operator (str): Operador matemático.
+
+    Returns:
+        float|str: Resultado da operação ou mensagem de erro.
+    """
     if len(stack_calculation) < 2:
         return f"Error: {operator} requires two operands"
 
@@ -63,6 +84,17 @@ def process_operation(stack_calculation, operator):
 def execute_operation(
     right_operator: float, operator: str, left_operator: float
 ) -> float:
+    """
+    Executa a operação matemática entre dois operandos.
+
+    Args:
+        right_operator (float): Operando da direita.
+        operator (str): Operador matemático.
+        left_operator (float): Operando da esquerda.
+
+    Returns:
+        float|str: Resultado da operação ou mensagem de erro.
+    """
     try:
         if operator == "^":
             return left_operator**right_operator
@@ -74,6 +106,17 @@ def execute_operation(
 
 
 def res(stack_calculation, token, resultados):
+    """
+    Recupera um resultado anterior da lista de resultados usando o comando RES.
+
+    Args:
+        stack_calculation (list): Pilha de operandos.
+        token (str): Token atual.
+        resultados (list): Lista de resultados anteriores.
+
+    Returns:
+        float|str: Resultado recuperado ou mensagem de erro.
+    """
     if len(stack_calculation) < 1:
         return "Error: RES requires one operand"
     try:
@@ -89,6 +132,17 @@ def res(stack_calculation, token, resultados):
 
 
 def mem(stack_calculation: list, token: str, memorias: dict):
+    """
+    Gerencia o armazenamento e recuperação de valores na memória.
+
+    Args:
+        stack_calculation (list): Pilha de operandos.
+        token (str): Nome da variável de memória.
+        memorias (dict): Dicionário de memórias.
+
+    Returns:
+        str|None: Mensagem de erro ou None.
+    """
     if token not in memorias.keys():
         if not token.isupper():
             return f"Error: '{token}' not valid for memory. It must be upper case."

@@ -5,6 +5,15 @@ input_line = ""
 
 
 def parseExpressao(line: str) -> list:
+    """
+    Analisa uma expressão matemática recebida como string e retorna uma lista de tokens ou uma mensagem de erro.
+
+    Args:
+        line (str): Expressão a ser analisada.
+
+    Returns:
+        list: Lista de tokens extraídos da expressão ou mensagem de erro em caso de falha.
+    """
     global token_list, input_line
     token_list.clear()
     input_line = line
@@ -21,6 +30,12 @@ def parseExpressao(line: str) -> list:
 
 
 def is_parentheses_valid():
+    """
+    Verifica se os parênteses na expressão estão balanceados.
+
+    Returns:
+        bool: True se os parênteses estão corretos, False caso contrário.
+    """
     count = 0
     for char in input_line:
         if char in ["(", ")"]:
@@ -32,6 +47,15 @@ def is_parentheses_valid():
 
 
 def initial_state(position: int) -> tuple[int, Optional[str]]:
+    """
+    Estado inicial do analisador léxico. Identifica o tipo do próximo token na expressão.
+
+    Args:
+        position (int): Posição atual na string de entrada.
+
+    Returns:
+        tuple: Próxima posição a ser analisada e mensagem de erro (caso exista).
+    """
     if position >= len(input_line):
         return position, None
 
@@ -58,6 +82,15 @@ def initial_state(position: int) -> tuple[int, Optional[str]]:
 
 
 def numeric_state(position: int) -> tuple[int, Optional[str]]:
+    """
+    Analisa e extrai um número (inteiro ou decimal) da expressão a partir da posição atual.
+
+    Args:
+        position (int): Posição inicial do número na string de entrada.
+
+    Returns:
+        tuple: Próxima posição após o número e mensagem de erro (caso exista).
+    """
     complete_number = ""
     decimal_points_count = 0
 
@@ -86,6 +119,15 @@ def numeric_state(position: int) -> tuple[int, Optional[str]]:
 
 
 def spacial_commands(position: int) -> tuple[int, Optional[str]]:
+    """
+    Analisa e extrai comandos especiais (palavras ou identificadores) da expressão.
+
+    Args:
+        position (int): Posição inicial do comando na string de entrada.
+
+    Returns:
+        tuple: Próxima posição após o comando e mensagem de erro (caso exista).
+    """
     complete_command = ""
 
     while position < len(input_line) and (
