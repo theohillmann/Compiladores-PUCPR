@@ -96,20 +96,3 @@ def spacial_commands(position: int) -> tuple[int, Optional[str]]:
 
     token_list.append(complete_command)
     return position, None
-
-
-print(parseExpressao("(3.14 2.0 +)"))
-print(parseExpressao("(1.5 2.0 *)"))
-print(parseExpressao("(5 RES)"))
-print(parseExpressao("(7 3 ^)"))
-print(parseExpressao("(7 3 /)"))
-print(parseExpressao("(7 3 -)"))
-print(parseExpressao("(7 3 ^)"))
-print(parseExpressao("(7 3 %)"))
-print(parseExpressao("(3.14.5 2.0 +)"))
-print(parseExpressao("(3,14 2.0 +)"))
-print(parseExpressao("(3.14 2.0 &)"))
-print(parseExpressao("3.14 2.0 +)"))
-print(parseExpressao("((3.14 2.0 +)"))
-print(parseExpressao("(3.14..5 2.0 +)"))
-print(parseExpressao("())("))
