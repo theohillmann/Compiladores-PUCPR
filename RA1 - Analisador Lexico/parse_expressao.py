@@ -26,7 +26,7 @@ def parseExpressao(line: str) -> list:
     while current_position < len(input_line) and error_message is None:
         current_position, error_message = initial_state(current_position)
 
-    return error_message if error_message else token_list
+    return error_message if error_message else token_list.copy()
 
 
 def is_parentheses_valid():
